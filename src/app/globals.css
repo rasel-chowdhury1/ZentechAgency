@@ -1,0 +1,160 @@
+@import "tailwindcss";
+
+/* ZentechPoint – Cream + Ink + Emerald (template style) */
+:root {
+  --background: #fbf7f1;         /* warm cream */
+  --foreground: #0b1220;         /* deep ink */
+
+  --card: #ffffff;
+  --card-foreground: #0b1220;
+
+  --muted-bg: #f4efe7;           /* soft sand */
+  --muted: #586174;              /* slate text */
+
+  --border: #e8dfd3;
+
+  --primary: #10a37f;            /* emerald-teal */
+  --primary-hover: #0e8c6d;
+  --primary-foreground: #ffffff;
+
+  --accent: #bff3de;
+
+  --dark: #0b1220;
+  --dark-2: #0f1a2e;
+  --dark-foreground: #e9edf5;
+
+  --ring: #10a37f;
+
+  --grad-peach: #f7d2c4;
+  --grad-lav: #e6dcff;
+  --grad-mint: #d8fff1;
+  --grad-sky: #d7f0ff;
+}
+
+:root {
+  /* Backgrounds */
+  --background: #ecfff6;          /* mint background */
+  --foreground: #062516;          /* deep green text */
+
+  --card: #ffffff;
+  --card-foreground: #062516;
+
+  --muted-bg: #e6fbf1;            /* soft mint */
+  --muted: #355e4a;               /* muted green text */
+
+  --border: #d7efe3;
+
+  /* Brand */
+  --primary: #0a5b3b;             /* button green */
+  --primary-hover: #084b31;
+  --primary-foreground: #ffffff;
+
+  --ring: #18a36a;
+
+  /* Extra */
+  --accent: #3cf0a0;              /* neon-ish numbers */
+  --dark: #061c12;
+  --dark-2: #0b2a1c;
+  --dark-foreground: #eafff6;
+}
+
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #050814;
+    --foreground: #e9edf5;
+
+    --card: #0b1220;
+    --card-foreground: #e9edf5;
+
+    --muted-bg: #0f1a2e;
+    --muted: #b4bfd4;
+
+    --border: #1b2a46;
+
+    --primary: #19c59a;
+    --primary-hover: #10a37f;
+    --primary-foreground: #04110d;
+
+    --accent: #0e2a22;
+
+    --dark: #050814;
+    --dark-2: #0b1220;
+    --dark-foreground: #e9edf5;
+
+    --ring: #19c59a;
+
+    --grad-peach: #3a1a14;
+    --grad-lav: #1e1a3a;
+    --grad-mint: #0d2a22;
+    --grad-sky: #0c2335;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-bg: var(--muted-bg);
+
+  --color-border: var(--border);
+
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-accent: var(--accent);
+
+  --color-dark: var(--dark);
+  --color-dark-2: var(--dark-2);
+  --color-dark-foreground: var(--dark-foreground);
+
+  --color-ring: var(--ring);
+}
+
+html,
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--muted-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: #cfc3b5;
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #b9ac9c;
+}
+
+
+.theme-dark {
+  --background: var(--dark);
+  --foreground: var(--dark-foreground);
+
+  --card: var(--dark-2);
+  --card-foreground: var(--dark-foreground);
+
+  --muted-bg: rgba(255, 255, 255, 0.06);
+  --muted: rgba(255, 255, 255, 0.72);
+
+  --border: rgba(255, 255, 255, 0.12);
+
+  --ring: var(--primary);
+}
