@@ -52,10 +52,10 @@ const companyLinks = [
 export default function Footer() {
   return (
     <footer className="bg-[color:var(--dark)] text-[color:var(--dark-foreground)]">
-      <Container className="pt-16 pb-10">
+      <Container className="pt-12 pb-8 sm:pt-16 sm:pb-10">
 
         {/* Top grid */}
-        <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-[1.8fr_1fr_1fr_1.2fr]">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.8fr_1fr_1fr_1.2fr]">
 
           {/* Brand */}
           <div>
