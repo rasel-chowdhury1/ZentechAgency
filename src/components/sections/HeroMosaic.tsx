@@ -67,16 +67,36 @@ export default function HeroMosaic() {
             </div>
 
             {/* Trusted by */}
-            <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <div className="text-sm text-[color:var(--muted)]">
-                Trusted by clients <br className="hidden sm:block" />
+            <div className="mt-10 flex items-center gap-6">
+              {/* Left label */}
+              <div className="shrink-0 text-sm leading-snug text-[color:var(--muted)]">
+                Trusted by clients
+                <br />
                 across the globe.
               </div>
 
-              <div className="flex flex-wrap items-center gap-6 text-[color:var(--muted)]/70 text-sm font-semibold">
-                <span className="tracking-wide">SHARKANI</span>
-                <span className="tracking-wide">STUDIOTEM</span>
-                <span className="tracking-wide">BOXME</span>
+              {/* Divider */}
+              <div className="shrink-0 w-px h-8 bg-[color:var(--border)]" />
+
+              {/* Right marquee */}
+              <div className="overflow-hidden relative flex-1 min-w-0">
+                {/* fade edges */}
+                <div className="pointer-events-none absolute left-0 top-0 h-full w-8 z-10"
+                  style={{ background: "linear-gradient(to right, var(--background), transparent)" }} />
+                <div className="pointer-events-none absolute right-0 top-0 h-full w-8 z-10"
+                  style={{ background: "linear-gradient(to left, var(--background), transparent)" }} />
+
+                <div className="marquee-track flex items-center gap-10 whitespace-nowrap w-max">
+                  {["SHARKANI", "STUDIOTEM", "BOXME", "NEXLABZ", "DEVHIVE", "CLOUDORA",
+                    "SHARKANI", "STUDIOTEM", "BOXME", "NEXLABZ", "DEVHIVE", "CLOUDORA","SHARKANI", "STUDIOTEM", "BOXME", "NEXLABZ", "DEVHIVE", "CLOUDORA"].map((name, i) => (
+                    <span
+                      key={i}
+                      className="tracking-widest text-sm font-bold text-[color:var(--muted)]/60"
+                    >
+                      {name}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

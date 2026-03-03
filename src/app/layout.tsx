@@ -7,6 +7,11 @@ export const metadata: Metadata = {
   title: "ZentechPoint | Digital Agency",
   description:
     "ZentechPoint builds modern websites, apps, software, UI/UX and marketing solutions.",
+  icons: {
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
+  },
 };
 
 export default function RootLayout({

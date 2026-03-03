@@ -24,7 +24,7 @@ export default function AboutPage() {
                 <Card className="p-0 overflow-hidden">
                   <div className="relative h-44 w-full">
                     <Image
-                      src="/images/team-1.jpg"
+                      src="/images/heroImage.png"
                       alt="Team"
                       fill
                       className="object-cover"
@@ -34,7 +34,7 @@ export default function AboutPage() {
                 <Card className="p-0 overflow-hidden">
                   <div className="relative h-44 w-full">
                     <Image
-                      src="/images/team-2.jpg"
+                      src="/images/heroImage2.png"
                       alt="Team"
                       fill
                       className="object-cover"

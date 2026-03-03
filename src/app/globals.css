@@ -144,6 +144,38 @@ body {
 }
 
 
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.marquee-track {
+  animation: marquee 18s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* Service card scroll animation */
+.card-animated {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+
+.cards-visible .card-animated {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.cards-visible .card-animated:nth-child(1) { transition-delay: 0ms; }
+.cards-visible .card-animated:nth-child(2) { transition-delay: 80ms; }
+.cards-visible .card-animated:nth-child(3) { transition-delay: 160ms; }
+.cards-visible .card-animated:nth-child(4) { transition-delay: 240ms; }
+.cards-visible .card-animated:nth-child(5) { transition-delay: 320ms; }
+.cards-visible .card-animated:nth-child(6) { transition-delay: 400ms; }
+
 .theme-dark {
   --background: var(--dark);
   --foreground: var(--dark-foreground);
