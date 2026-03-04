@@ -18,7 +18,7 @@ function Underline({ children }: { children: React.ReactNode }) {
 export default function HeroMosaic() {
   return (
     <section className="bg-[color:var(--background)]">
-      <Container className="py-10 md:py-14 lg:py-10">
+      <Container className="pt-1 pb-10 md:pt-2 md:pb-14 lg:pt-1 lg:pb-10">
         <div className="grid gap-10 lg:grid-cols-2 lg:items-start">
 
           {/* LEFT — text */}

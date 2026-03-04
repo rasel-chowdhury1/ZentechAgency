@@ -42,61 +42,111 @@ const socials = [
 ];
 
 const companyLinks = [
-  { label: "About Us", href: "/about" },
+  { label: "About Us",  href: "/about" },
   { label: "Portfolio", href: "/portfolio" },
-  { label: "Pricing", href: "/pricing" },
-  { label: "Blog", href: "/blog" },
-  { label: "Contact", href: "/contact" },
+  { label: "Pricing",   href: "/pricing" },
+  { label: "Blog",      href: "/blog" },
+  { label: "Contact",   href: "/contact" },
+];
+
+const legalLinks = [
+  { label: "Privacy Policy",   href: "/privacy" },
+  { label: "Terms of Service", href: "/terms" },
+  { label: "Sitemap",          href: "/sitemap.xml" },
 ];
 
 export default function Footer() {
   return (
-    <footer className="bg-[color:var(--dark)] text-[color:var(--dark-foreground)]">
-      <Container className="pt-12 pb-8 sm:pt-16 sm:pb-10">
+    <footer className="relative bg-[color:var(--dark)] text-[color:var(--dark-foreground)]">
 
-        {/* Top grid */}
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.8fr_1fr_1fr_1.2fr]">
+      {/* Subtle top gradient glow */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[color:var(--primary)]/40 to-transparent" />
 
-          {/* Brand */}
-          <div>
+      <Container className="pt-16 pb-8 sm:pt-20 sm:pb-10">
+
+        {/* ── Top: brand + newsletter strip ── */}
+        <div className="mb-14 flex flex-col gap-8 rounded-2xl border border-white/[0.07] bg-white/[0.03] p-7 md:flex-row md:items-center md:justify-between md:gap-6">
+          {/* Brand block */}
+          <div className="flex items-center gap-3.5">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[color:var(--primary)] text-sm font-bold text-white shadow-lg shadow-[color:var(--primary)]/30">
+              ZP
+            </div>
+            <div>
+              <p className="text-base font-bold text-white">ZentechPoint</p>
+              <p className="text-[11px] text-white/35">Premium Digital Agency</p>
+            </div>
+          </div>
+
+          {/* Tagline */}
+          <p className="max-w-xs text-sm leading-relaxed text-white/40 md:text-center">
+            We turn ideas into high-performance digital products that grow your business.
+          </p>
+
+          {/* Start project CTA */}
+          <Link
+            href="/contact"
+            className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-[color:var(--primary)] px-5 py-2.5 text-sm font-semibold text-white transition-opacity duration-200 hover:opacity-85"
+          >
+            Start a project
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+            </svg>
+          </Link>
+        </div>
+
+        {/* ── Main grid ── */}
+        <div className="grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-[1.6fr_1fr_1fr_1.3fr]">
+
+          {/* Brand column */}
+          <div className="col-span-2 lg:col-span-1">
             <Link href="/" className="inline-flex items-center gap-2.5">
-              <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-[color:var(--primary)] font-bold text-sm text-white">
+              <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-[color:var(--primary)]/15 text-xs font-bold text-[color:var(--primary)] ring-1 ring-[color:var(--primary)]/25">
                 ZP
               </span>
-              <span className="text-base font-semibold text-white">ZentechPoint</span>
+              <span className="text-sm font-semibold text-white/70">ZentechPoint</span>
             </Link>
-            <p className="mt-4 text-sm leading-relaxed text-white/45 max-w-xs">
-              Premium web, app &amp; software solutions built for performance.
-              We turn ideas into digital products that grow your business.
+
+            <p className="mt-4 max-w-[220px] text-sm leading-relaxed text-white/35">
+              Premium web, app &amp; software solutions built for performance and growth.
             </p>
 
             {/* Socials */}
-            <div className="mt-6 flex items-center gap-2.5">
+            <div className="mt-6 flex items-center gap-2">
               {socials.map((s) => (
                 <a
                   key={s.label}
                   href={s.href}
                   aria-label={s.label}
-                  className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 text-white/35 transition-colors duration-200 hover:border-[color:var(--primary)] hover:text-[color:var(--primary)]"
+                  className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/8 bg-white/[0.04] text-white/30 transition-all duration-200 hover:border-[color:var(--primary)]/40 hover:bg-[color:var(--primary)]/10 hover:text-[color:var(--primary)]"
                 >
                   {s.icon}
                 </a>
               ))}
             </div>
+
+            {/* Status badge */}
+            <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/8 bg-white/[0.04] px-3 py-1.5">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+              </span>
+              <span className="text-[11px] text-white/40">Available for new projects</span>
+            </div>
           </div>
 
           {/* Services */}
           <div>
-            <p className="text-[11px] font-semibold uppercase tracking-widest text-[color:var(--primary)]">
+            <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[color:var(--primary)]">
               Services
             </p>
-            <ul className="mt-4 space-y-2.5">
+            <ul className="mt-5 space-y-3">
               {services.map((s) => (
                 <li key={s.slug}>
                   <Link
                     href={`/services/${s.slug}`}
-                    className="text-sm text-white/45 transition-colors duration-200 hover:text-white"
+                    className="group flex items-center gap-1.5 text-sm text-white/40 transition-colors duration-200 hover:text-white"
                   >
+                    <span className="h-px w-3 bg-white/15 transition-all duration-200 group-hover:w-4 group-hover:bg-[color:var(--primary)]" />
                     {s.title}
                   </Link>
                 </li>
@@ -106,16 +156,17 @@ export default function Footer() {
 
           {/* Company */}
           <div>
-            <p className="text-[11px] font-semibold uppercase tracking-widest text-[color:var(--primary)]">
+            <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[color:var(--primary)]">
               Company
             </p>
-            <ul className="mt-4 space-y-2.5">
+            <ul className="mt-5 space-y-3">
               {companyLinks.map((l) => (
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="text-sm text-white/45 transition-colors duration-200 hover:text-white"
+                    className="group flex items-center gap-1.5 text-sm text-white/40 transition-colors duration-200 hover:text-white"
                   >
+                    <span className="h-px w-3 bg-white/15 transition-all duration-200 group-hover:w-4 group-hover:bg-[color:var(--primary)]" />
                     {l.label}
                   </Link>
                 </li>
@@ -124,68 +175,73 @@ export default function Footer() {
           </div>
 
           {/* Contact */}
-          <div>
-            <p className="text-[11px] font-semibold uppercase tracking-widest text-[color:var(--primary)]">
-              Contact
+          <div className="col-span-2 lg:col-span-1">
+            <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[color:var(--primary)]">
+              Get in Touch
             </p>
-            <ul className="mt-4 space-y-3.5">
+            <ul className="mt-5 space-y-4">
               <li>
                 <a
                   href="mailto:hello@zentechpoint.com"
-                  className="flex items-start gap-2.5 text-sm text-white/45 transition-colors duration-200 hover:text-white"
+                  className="group flex items-start gap-3 text-sm text-white/40 transition-colors duration-200 hover:text-white"
                 >
-                  <svg className="mt-0.5 h-4 w-4 shrink-0 text-white/25" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
-                  </svg>
-                  hello@zentechpoint.com
+                  <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-white/8 bg-white/[0.04] text-white/25 transition-all duration-200 group-hover:border-[color:var(--primary)]/30 group-hover:bg-[color:var(--primary)]/10 group-hover:text-[color:var(--primary)]">
+                    <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                    </svg>
+                  </span>
+                  <span>
+                    <span className="block text-[10px] font-semibold uppercase tracking-widest text-white/25">Email</span>
+                    hello@zentechpoint.com
+                  </span>
                 </a>
               </li>
-              <li className="flex items-start gap-2.5 text-sm text-white/45">
-                <svg className="mt-0.5 h-4 w-4 shrink-0 text-white/25" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0z" />
-                </svg>
-                Bangladesh — Remote Worldwide
+              <li className="flex items-start gap-3 text-sm text-white/40">
+                <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-white/8 bg-white/[0.04] text-white/25">
+                  <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                  </svg>
+                </span>
+                <span>
+                  <span className="block text-[10px] font-semibold uppercase tracking-widest text-white/25">Location</span>
+                  Bangladesh — Remote Worldwide
+                </span>
               </li>
-              <li className="flex items-start gap-2.5 text-sm text-white/45">
-                <svg className="mt-0.5 h-4 w-4 shrink-0 text-white/25" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" />
-                </svg>
-                Response within 24 hours
+              <li className="flex items-start gap-3 text-sm text-white/40">
+                <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-white/8 bg-white/[0.04] text-white/25">
+                  <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </span>
+                <span>
+                  <span className="block text-[10px] font-semibold uppercase tracking-widest text-white/25">Response</span>
+                  Within 24 hours
+                </span>
               </li>
             </ul>
-
-            {/* CTA */}
-            <Link
-              href="/contact"
-              className="mt-6 inline-flex items-center gap-1.5 rounded-lg bg-[color:var(--primary)] px-4 py-2 text-sm font-medium text-white transition-opacity duration-200 hover:opacity-85"
-            >
-              Start a project
-              <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-              </svg>
-            </Link>
           </div>
+
         </div>
 
-        {/* Divider */}
-        <div className="mt-14 border-t border-white/10" />
+        {/* ── Divider ── */}
+        <div className="mt-14 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
-        {/* Bottom bar */}
+        {/* ── Bottom bar ── */}
         <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-xs text-white/25">
+          <p className="text-xs text-white/20">
             © {new Date().getFullYear()} ZentechPoint. All rights reserved.
           </p>
-          <div className="flex items-center gap-5 text-xs text-white/25">
-            <Link href="/privacy" className="transition-colors duration-200 hover:text-white/60">
-              Privacy Policy
-            </Link>
-            <Link href="/terms" className="transition-colors duration-200 hover:text-white/60">
-              Terms of Service
-            </Link>
-            <Link href="/sitemap.xml" className="transition-colors duration-200 hover:text-white/60">
-              Sitemap
-            </Link>
+          <div className="flex flex-wrap items-center gap-5">
+            {legalLinks.map((l) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                className="text-xs text-white/20 transition-colors duration-200 hover:text-white/50"
+              >
+                {l.label}
+              </Link>
+            ))}
           </div>
         </div>
 
