@@ -125,6 +125,11 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Hide default cursor on non-touch devices when custom cursor is active */
+@media (pointer: fine) {
+  *, *::before, *::after { cursor: none !important; }
+}
+
 * {
   -webkit-tap-highlight-color: transparent;
 }
