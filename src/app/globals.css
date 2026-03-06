@@ -1,94 +1,102 @@
 @import "tailwindcss";
 
-/* ZentechPoint – Cream + Ink + Emerald (template style) */
+/* ZentechPoint — Clean professional light mode */
 :root {
-  --background: #fbf7f1;         /* warm cream */
-  --foreground: #0b1220;         /* deep ink */
+  --background: #f9fafb;          /* near-white neutral */
+  --foreground: #0f172a;          /* slate-900 */
 
   --card: #ffffff;
-  --card-foreground: #0b1220;
+  --card-foreground: #0f172a;
 
-  --muted-bg: #f4efe7;           /* soft sand */
-  --muted: #586174;              /* slate text */
+  --muted-bg: #f1f5f9;            /* slate-100 */
+  --muted: #64748b;               /* slate-500 */
 
-  --border: #e8dfd3;
+  --border: #e2e8f0;              /* slate-200 */
 
-  --primary: #10a37f;            /* emerald-teal */
-  --primary-hover: #0e8c6d;
+  --primary: #059669;             /* emerald-600 */
+  --primary-hover: #047857;       /* emerald-700 */
   --primary-foreground: #ffffff;
 
-  --accent: #bff3de;
+  --ring: #10b981;                /* emerald-500 */
 
-  --dark: #0b1220;
-  --dark-2: #0f1a2e;
-  --dark-foreground: #e9edf5;
+  --accent: #d1fae5;              /* emerald-100 */
 
-  --ring: #10a37f;
+  --dark: #0f172a;
+  --dark-2: #1e293b;
+  --dark-foreground: #f1f5f9;
 
-  --grad-peach: #f7d2c4;
-  --grad-lav: #e6dcff;
-  --grad-mint: #d8fff1;
-  --grad-sky: #d7f0ff;
-}
-
-:root {
-  /* Backgrounds */
-  --background: #ecfff6;          /* mint background */
-  --foreground: #062516;          /* deep green text */
-
-  --card: #ffffff;
-  --card-foreground: #062516;
-
-  --muted-bg: #e6fbf1;            /* soft mint */
-  --muted: #355e4a;               /* muted green text */
-
-  --border: #d7efe3;
-
-  /* Brand */
-  --primary: #0a5b3b;             /* button green */
-  --primary-hover: #084b31;
-  --primary-foreground: #ffffff;
-
-  --ring: #18a36a;
-
-  /* Extra */
-  --accent: #3cf0a0;              /* neon-ish numbers */
-  --dark: #061c12;
-  --dark-2: #0b2a1c;
-  --dark-foreground: #eafff6;
+  --grad-peach: #fde8e4;
+  --grad-lav: #ede9fe;
+  --grad-mint: #d1fae5;
+  --grad-sky: #dbeafe;
 }
 
 
+/* Dark mode — system preference */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not(.light) {
     --background: #050814;
     --foreground: #e9edf5;
-
     --card: #0b1220;
     --card-foreground: #e9edf5;
-
     --muted-bg: #0f1a2e;
     --muted: #b4bfd4;
-
     --border: #1b2a46;
-
     --primary: #19c59a;
     --primary-hover: #10a37f;
     --primary-foreground: #04110d;
-
     --accent: #0e2a22;
-
     --dark: #050814;
     --dark-2: #0b1220;
     --dark-foreground: #e9edf5;
-
     --ring: #19c59a;
-
     --grad-peach: #3a1a14;
     --grad-lav: #1e1a3a;
     --grad-mint: #0d2a22;
     --grad-sky: #0c2335;
   }
+}
+
+/* Dark mode — manual toggle (.dark class on <html>) */
+html.dark {
+  --background: #050814;
+  --foreground: #e9edf5;
+  --card: #0b1220;
+  --card-foreground: #e9edf5;
+  --muted-bg: #0f1a2e;
+  --muted: #b4bfd4;
+  --border: #1b2a46;
+  --primary: #19c59a;
+  --primary-hover: #10a37f;
+  --primary-foreground: #04110d;
+  --accent: #0e2a22;
+  --dark: #050814;
+  --dark-2: #0b1220;
+  --dark-foreground: #e9edf5;
+  --ring: #19c59a;
+  --grad-peach: #3a1a14;
+  --grad-lav: #1e1a3a;
+  --grad-mint: #0d2a22;
+  --grad-sky: #0c2335;
+}
+
+/* Light mode — manual toggle (.light class overrides dark system pref) */
+html.light {
+  --background: #f9fafb;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --muted-bg: #f1f5f9;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --primary: #059669;
+  --primary-hover: #047857;
+  --primary-foreground: #ffffff;
+  --ring: #10b981;
+  --accent: #d1fae5;
+  --dark: #0f172a;
+  --dark-2: #1e293b;
+  --dark-foreground: #f1f5f9;
 }
 
 @theme inline {
@@ -125,7 +133,8 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Hide default cursor on non-touch devices when custom cursor is active */
+
+/* Hide system cursor on pointer devices — replaced by custom cursor */
 @media (pointer: fine) {
   *, *::before, *::after { cursor: none !important; }
 }
@@ -141,11 +150,11 @@ body {
   background: var(--muted-bg);
 }
 ::-webkit-scrollbar-thumb {
-  background: #cfc3b5;
+  background: #cbd5e1;
   border-radius: 999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #b9ac9c;
+  background: #94a3b8;
 }
 
 
@@ -219,6 +228,81 @@ body {
 .ds-section-visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* ── Hero 3-D word reveal ── */
+@keyframes hero-word-in {
+  0% {
+    opacity: 0;
+    transform: perspective(600px) rotateX(-18deg) translateY(28px);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(600px) rotateX(0deg) translateY(0);
+  }
+}
+
+/* Disable heavy 3-D on touch/mobile — simple fade-up instead */
+@media (pointer: coarse) {
+  @keyframes hero-word-in {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+}
+
+.hero-word {
+  display: inline-block;
+  opacity: 0;
+  will-change: transform, opacity;
+  animation: hero-word-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes hero-fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.hero-fade-up {
+  opacity: 0;
+  animation: hero-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Sub-elements: animationDelay handles sequencing */
+.hero-sub .hero-fade-up { animation-play-state: running; }
+
+/* Transition-based sub-content reveal (more reliable on mobile) */
+.hero-sub-item {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.sub-visible .hero-sub-item {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* One-time shimmer sweep — only on the inner span (no opacity conflict) */
+@keyframes shimmer-sweep {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+/* Applied to the INNER span inside .hero-word — no animation conflict */
+.hero-shimmer-text {
+  background: linear-gradient(
+    105deg,
+    var(--foreground) 35%,
+    var(--primary)    48%,
+    var(--ring)       54%,
+    var(--foreground) 65%
+  );
+  background-size: 250% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  /* runs after the parent hero-word entrance finishes */
+  animation: shimmer-sweep 3s linear 1s 1 forwards;
 }
 
 .theme-dark {

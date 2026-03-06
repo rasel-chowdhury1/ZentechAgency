@@ -26,10 +26,14 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className="overflow-x-hidden">
+      {/* Prevent theme flash on load */}
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: `(function(){try{var t=localStorage.getItem('theme');if(t==='dark')document.documentElement.classList.add('dark');else if(t==='light')document.documentElement.classList.add('light');}catch(e){}})();` }} />
+      </head>
       <body className="min-h-screen w-full overflow-x-hidden bg-[color:var(--background)] text-[color:var(--foreground)]">
         <CustomCursor />
         <Navbar />
-        <main className="pt-16">{children}</main>
+        <main>{children}</main>
         <Footer />
       </body>
     </html>

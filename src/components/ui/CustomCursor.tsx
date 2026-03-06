@@ -2,123 +2,175 @@
 
 import { useEffect, useRef, useState } from "react";
 
+type CursorState = "default" | "hover" | "click" | "text";
+
 export default function CustomCursor() {
-  const dotRef  = useRef<HTMLDivElement>(null);
-  const ringRef = useRef<HTMLDivElement>(null);
+  const dotRef   = useRef<HTMLDivElement>(null);
+  const ringRef  = useRef<HTMLDivElement>(null);
+  const glowRef  = useRef<HTMLDivElement>(null);
 
-  // Ring position — smoothly lags behind
-  const ring = useRef({ x: -80, y: -80 });
-  // Dot position — instant
-  const dot  = useRef({ x: -80, y: -80 });
-
-  const [hovered,  setHovered]  = useState(false);
-  const [clicking, setClicking] = useState(false);
-  const [visible,  setVisible]  = useState(false);
+  const pos   = useRef({ x: -120, y: -120 });
+  const ring  = useRef({ x: -120, y: -120 });
   const rafId = useRef<number>(0);
+  const angle = useRef(0);
+
+  const [visible, setVisible] = useState(false);
+  const [state,   setState]   = useState<CursorState>("default");
 
   useEffect(() => {
-    // Only show on non-touch devices
     if (window.matchMedia("(pointer: coarse)").matches) return;
 
     const onMove = (e: MouseEvent) => {
-      dot.current  = { x: e.clientX, y: e.clientY };
+      pos.current = { x: e.clientX, y: e.clientY };
       if (!visible) setVisible(true);
     };
 
-    const onEnter = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (target.closest("a, button, [data-cursor-hover], input, textarea, select, label")) {
-        setHovered(true);
-      }
+    const getState = (target: EventTarget | null): CursorState => {
+      const el = target as HTMLElement;
+      if (el?.closest("input, textarea, [contenteditable]")) return "text";
+      if (el?.closest("a, button, [data-cursor-hover], select, label")) return "hover";
+      return "default";
     };
 
-    const onLeave = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (target.closest("a, button, [data-cursor-hover], input, textarea, select, label")) {
-        setHovered(false);
-      }
-    };
+    const onOver  = (e: MouseEvent) => setState(getState(e.target));
+    const onOut   = (e: MouseEvent) => { if (!(e.target as HTMLElement)?.closest("a,button,input,textarea,select,label,[data-cursor-hover],[contenteditable]")) setState("default"); };
+    const onDown  = () => setState("click");
+    const onUp    = (e: MouseEvent) => setState(getState(e.target));
+    const onLeave = () => setVisible(false);
+    const onEnter = () => setVisible(true);
 
-    const onDown = () => setClicking(true);
-    const onUp   = () => setClicking(false);
-
-    const onMouseLeave = () => setVisible(false);
-    const onMouseEnter = () => setVisible(true);
-
-    window.addEventListener("mousemove",  onMove);
-    window.addEventListener("mouseover",  onEnter);
-    window.addEventListener("mouseout",   onLeave);
+    window.addEventListener("mousemove",  onMove,  { passive: true });
+    window.addEventListener("mouseover",  onOver);
+    window.addEventListener("mouseout",   onOut);
     window.addEventListener("mousedown",  onDown);
     window.addEventListener("mouseup",    onUp);
-    document.documentElement.addEventListener("mouseleave", onMouseLeave);
-    document.documentElement.addEventListener("mouseenter", onMouseEnter);
+    document.documentElement.addEventListener("mouseleave", onLeave);
+    document.documentElement.addEventListener("mouseenter", onEnter);
 
-    // Smooth ring follow loop
     const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+
     const loop = () => {
-      ring.current.x = lerp(ring.current.x, dot.current.x, 0.12);
-      ring.current.y = lerp(ring.current.y, dot.current.y, 0.12);
+      const lerpSpeed = 0.1;
+      ring.current.x = lerp(ring.current.x, pos.current.x, lerpSpeed);
+      ring.current.y = lerp(ring.current.y, pos.current.y, lerpSpeed);
+      angle.current += 1.2;
 
       if (dotRef.current) {
-        dotRef.current.style.transform =
-          `translate(${dot.current.x}px, ${dot.current.y}px)`;
+        dotRef.current.style.transform = `translate(${pos.current.x}px,${pos.current.y}px) translate(-50%,-50%)`;
       }
       if (ringRef.current) {
-        ringRef.current.style.transform =
-          `translate(${ring.current.x}px, ${ring.current.y}px)`;
+        ringRef.current.style.transform = `translate(${ring.current.x}px,${ring.current.y}px) translate(-50%,-50%) rotate(${angle.current}deg)`;
       }
+      if (glowRef.current) {
+        glowRef.current.style.transform = `translate(${ring.current.x}px,${ring.current.y}px) translate(-50%,-50%)`;
+      }
+
       rafId.current = requestAnimationFrame(loop);
     };
     rafId.current = requestAnimationFrame(loop);
 
     return () => {
       window.removeEventListener("mousemove",  onMove);
-      window.removeEventListener("mouseover",  onEnter);
-      window.removeEventListener("mouseout",   onLeave);
+      window.removeEventListener("mouseover",  onOver);
+      window.removeEventListener("mouseout",   onOut);
       window.removeEventListener("mousedown",  onDown);
       window.removeEventListener("mouseup",    onUp);
-      document.documentElement.removeEventListener("mouseleave", onMouseLeave);
-      document.documentElement.removeEventListener("mouseenter", onMouseEnter);
+      document.documentElement.removeEventListener("mouseleave", onLeave);
+      document.documentElement.removeEventListener("mouseenter", onEnter);
       cancelAnimationFrame(rafId.current);
     };
   }, [visible]);
 
+  const opacity = visible ? 1 : 0;
+
   return (
     <>
-      {/* Dot — instant follow */}
+      {/* ── Ambient glow (follows ring with blur) ── */}
       <div
-        ref={dotRef}
+        ref={glowRef}
         aria-hidden="true"
-        className="pointer-events-none fixed left-0 top-0 z-[9999] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300"
-        style={{ opacity: visible ? 1 : 0 }}
+        className="pointer-events-none fixed left-0 top-0 z-[9996] transition-opacity duration-500"
+        style={{ opacity: opacity * (state === "hover" ? 0.35 : 0.15) }}
       >
         <div
-          className={`rounded-full bg-[color:var(--primary)] transition-all duration-150 ${
-            clicking
-              ? "h-2 w-2 opacity-60"
-              : hovered
-              ? "h-2.5 w-2.5 opacity-80"
-              : "h-2 w-2 opacity-100"
+          className={`rounded-full bg-[color:var(--primary)] blur-2xl transition-all duration-300 ${
+            state === "hover" ? "h-16 w-16" : state === "click" ? "h-8 w-8" : "h-12 w-12"
           }`}
         />
       </div>
 
-      {/* Ring — lagging follow */}
+      {/* ── Outer ring (lagging + rotating dashes) ── */}
       <div
         ref={ringRef}
         aria-hidden="true"
-        className="pointer-events-none fixed left-0 top-0 z-[9998] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300"
-        style={{ opacity: visible ? 1 : 0 }}
+        className="pointer-events-none fixed left-0 top-0 z-[9998] transition-opacity duration-300"
+        style={{ opacity }}
       >
-        <div
-          className={`rounded-full border border-[color:var(--primary)] transition-all duration-200 ${
-            clicking
-              ? "h-6 w-6 scale-75 opacity-40"
-              : hovered
-              ? "h-10 w-10 border-[color:var(--primary)]/50 bg-[color:var(--primary)]/8 opacity-80"
-              : "h-8 w-8 opacity-50"
-          }`}
-        />
+        <svg
+          className="transition-all duration-300"
+          style={{
+            width:  state === "hover" ? 48 : state === "click" ? 24 : 36,
+            height: state === "hover" ? 48 : state === "click" ? 24 : 36,
+            marginLeft: state === "hover" ? -24 : state === "click" ? -12 : -18,
+            marginTop:  state === "hover" ? -24 : state === "click" ? -12 : -18,
+          }}
+          viewBox="0 0 36 36"
+          fill="none"
+        >
+          <circle
+            cx="18" cy="18" r="16"
+            stroke="var(--primary)"
+            strokeWidth={state === "hover" ? "1.5" : "1"}
+            strokeDasharray={state === "hover" ? "4 3" : state === "default" ? "3 5" : "2 4"}
+            strokeOpacity={state === "click" ? 0.4 : state === "hover" ? 0.9 : 0.55}
+          />
+          {/* Inner accent arc */}
+          {state === "hover" && (
+            <circle
+              cx="18" cy="18" r="10"
+              stroke="var(--ring)"
+              strokeWidth="1"
+              strokeDasharray="2 6"
+              strokeOpacity="0.5"
+            />
+          )}
+        </svg>
+      </div>
+
+      {/* ── Center dot ── */}
+      <div
+        ref={dotRef}
+        aria-hidden="true"
+        className="pointer-events-none fixed left-0 top-0 z-[9999] transition-opacity duration-300"
+        style={{ opacity }}
+      >
+        {state === "text" ? (
+          /* Text cursor — thin I-beam style */
+          <div className="flex h-5 w-[2px] -translate-x-px flex-col items-center">
+            <div className="h-1 w-1.5 rounded-sm bg-[color:var(--primary)]" />
+            <div className="flex-1 w-[1.5px] bg-[color:var(--primary)]" />
+            <div className="h-1 w-1.5 rounded-sm bg-[color:var(--primary)]" />
+          </div>
+        ) : (
+          <div
+            className="rounded-full transition-all duration-150"
+            style={{
+              width:   state === "hover" ? 8  : state === "click" ? 4  : 6,
+              height:  state === "hover" ? 8  : state === "click" ? 4  : 6,
+              marginLeft: state === "hover" ? -4 : state === "click" ? -2 : -3,
+              marginTop:  state === "hover" ? -4 : state === "click" ? -2 : -3,
+              background: state === "hover"
+                ? "linear-gradient(135deg, var(--primary), var(--ring))"
+                : "var(--primary)",
+              boxShadow: state === "hover"
+                ? "0 0 8px 2px color-mix(in srgb, var(--primary) 60%, transparent)"
+                : state === "click"
+                ? "0 0 6px 1px color-mix(in srgb, var(--primary) 80%, transparent)"
+                : "none",
+              opacity: state === "click" ? 0.7 : 1,
+            }}
+          />
+        )}
       </div>
     </>
   );
