@@ -49,11 +49,16 @@ export default function CTA() {
               </span>
 
               <h2 className="mt-4 text-3xl font-bold leading-tight text-white md:text-4xl">
-                Start a project with<br className="hidden sm:block" /> ZentechPoint
+                Start Your Project Journey with
+                <span className="block" style={{ background: "linear-gradient(90deg, var(--primary), var(--ring))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                  a Free Consultation
+                </span>
               </h2>
 
-              <p className="mt-3 leading-relaxed text-white/55">
-                Tell us your idea — we'll respond with a clear plan and honest estimate. No pressure, no hidden fees.
+              <p className="mt-3 max-w-lg leading-relaxed text-white/60">
+                Take the first step toward digital transformation. Our expert team is ready to discuss
+                your project requirements, provide strategic recommendations, and create a customized
+                solution that drives real business results.
               </p>
 
               {/* Trust pills */}

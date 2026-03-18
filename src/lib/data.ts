@@ -10,41 +10,19 @@ export const navLinks = [
 
 
 export const services: Service[] = [
-  // 1. Digital Marketing FIRST
-  {
-    slug: "digital-marketing",
-    title: "Digital Marketing",
-    category: "Growth",
-    description:
-      "SEO, paid ads, analytics, and content strategies to increase traffic, leads, and conversions.",
-    bullets: [
-      "SEO optimization",
-      "Google Ads & Meta Ads",
-      "Analytics & tracking",
-      "Conversion optimization",
-    ],
-    timeline: "Ongoing / Monthly",
-    bestFor: "Businesses looking to grow traffic and sales",
-    deliverables: [
-      "SEO audit report",
-      "Campaign setup",
-      "Analytics dashboard",
-      "Monthly performance reports",
-    ],
-  },
-
-  // 2. Web Development
+  // 1. Website Design & Development
   {
     slug: "web-development",
-    title: "Web Development",
+    title: "Website Design & Development",
     category: "Development",
     description:
-      "Modern, fast, SEO-friendly websites and scalable web applications.",
+      "Build powerful, conversion-focused websites that engage visitors and drive business results through responsive design, optimized performance, and strategic user experience architecture.",
     bullets: [
-      "Next.js / React",
-      "Performance optimization",
-      "SEO-ready architecture",
-      "Deployment & support",
+      "Custom responsive web design",
+      "E-commerce solutions",
+      "SEO-optimized development",
+      "Fast-loading, mobile-first approach",
+      "Content management systems",
     ],
     timeline: "1–6 weeks",
     bestFor: "Business websites, dashboards, SaaS platforms",
@@ -56,18 +34,19 @@ export const services: Service[] = [
     ],
   },
 
-  // 3. App Development
+  // 2. Android/iOS App Development
   {
     slug: "app-development",
-    title: "App Development",
+    title: "Android/iOS App Development",
     category: "Mobile",
     description:
-      "High-performance mobile apps for Android and iOS platforms.",
+      "Create intuitive mobile applications that connect with your audience across all devices, featuring seamless functionality, engaging interfaces, and scalable architecture for sustainable growth.",
     bullets: [
-      "Flutter / React Native",
-      "API integration",
-      "Push notifications",
-      "App store deployment",
+      "iOS and Android app development",
+      "Cross-platform solutions",
+      "Progressive web apps (PWA)",
+      "App store optimization",
+      "Ongoing maintenance and updates",
     ],
     timeline: "3–10 weeks",
     bestFor: "Startups, service apps, marketplaces",
@@ -79,18 +58,19 @@ export const services: Service[] = [
     ],
   },
 
-  // 4. Software Development
+  // 3. Custom Software & Automation
   {
     slug: "software-development",
-    title: "Software Development",
+    title: "Custom Software & Automation",
     category: "Engineering",
     description:
-      "Custom backend systems, APIs, and automation solutions.",
+      "Streamline business operations with tailored software solutions that automate processes, improve efficiency, and integrate seamlessly with existing systems for enhanced productivity and scalability.",
     bullets: [
-      "Node.js / Python",
-      "Database architecture",
-      "Automation systems",
-      "Secure APIs",
+      "Enterprise software development",
+      "Database design and management",
+      "API development and integration",
+      "Cloud-based solutions",
+      "Legacy system modernization",
     ],
     timeline: "2–12 weeks",
     bestFor: "Custom platforms, automation tools",
@@ -102,18 +82,43 @@ export const services: Service[] = [
     ],
   },
 
-  // 5. UI/UX Design
+  // 4. SEO & Performance Marketing
+  {
+    slug: "digital-marketing",
+    title: "SEO & Performance Marketing",
+    category: "Growth",
+    description:
+      "Increase online visibility and drive qualified traffic through data-driven marketing strategies, search optimization, and targeted campaigns that deliver measurable ROI and sustainable growth.",
+    bullets: [
+      "Search engine optimization (SEO)",
+      "Pay-per-click advertising (PPC)",
+      "Social media marketing",
+      "Local SEO optimization",
+      "Analytics and reporting",
+    ],
+    timeline: "Ongoing / Monthly",
+    bestFor: "Businesses looking to grow traffic and sales",
+    deliverables: [
+      "SEO audit report",
+      "Campaign setup",
+      "Analytics dashboard",
+      "Monthly performance reports",
+    ],
+  },
+
+  // 5. UI/UX Design Systems
   {
     slug: "ui-ux-design",
-    title: "UI/UX Design",
+    title: "UI/UX Design Systems",
     category: "Design",
     description:
-      "Premium UI/UX design with modern layouts and design systems.",
+      "Design intuitive user experiences that convert visitors into customers through research-backed interfaces, strategic user flows, and visually compelling designs that reflect your brand identity.",
     bullets: [
-      "Figma design",
-      "Design systems",
-      "Wireframes",
-      "Prototype",
+      "User experience research",
+      "Interface design and prototyping",
+      "Usability testing",
+      "Brand identity development",
+      "Conversion optimization",
     ],
     timeline: "1–3 weeks",
     bestFor: "Websites, apps, dashboards",
@@ -125,18 +130,19 @@ export const services: Service[] = [
     ],
   },
 
-  // 6. IT Consultancy
+  // 6. IT Consulting & Support
   {
     slug: "it-consultancy",
-    title: "IT Consultancy",
+    title: "IT Consulting & Support",
     category: "Consulting",
     description:
-      "Expert advice on architecture, scaling, and technology decisions.",
+      "Navigate technology decisions with confidence through strategic consulting services that align technical solutions with business objectives, ensuring optimal performance and long-term success.",
     bullets: [
-      "Architecture planning",
-      "Scaling strategy",
-      "Security audit",
-      "Technology roadmap",
+      "Technology strategy planning",
+      "System architecture consulting",
+      "Digital transformation",
+      "Security assessments",
+      "Performance optimization",
     ],
     timeline: "1–4 weeks",
     bestFor: "Startups and scaling businesses",
@@ -222,20 +228,28 @@ export const pricing: PricingPlan[] = [
 
 export const faqs = [
   {
-    q: "How long does it take to build a website?",
-    a: "Simple sites can take 1–2 weeks. Larger websites or web apps usually take 3–6+ weeks depending on features.",
+    q: "How long does a typical web development project take with ZentechPoint?",
+    a: "Project timelines depend on complexity and requirements. Simple business websites typically take 3–4 weeks, while custom e-commerce platforms or complex web applications require 8–16 weeks. We provide detailed timelines during our initial consultation based on your specific needs.",
   },
   {
-    q: "Do you provide UI/UX design in Figma?",
-    a: "Yes. We design wireframes, UI screens, and a small design system to ensure consistency and a premium look.",
+    q: "Do you develop apps for both iOS and Android platforms?",
+    a: "Yes, we specialize in both native iOS and Android development, as well as cross-platform solutions using React Native and Flutter. We help you choose the best approach based on your target audience, budget, and long-term goals.",
   },
   {
-    q: "Can you help with hosting and deployment?",
-    a: "Yes. We deploy to Vercel/Netlify, connect domains, set up SSL, analytics, and performance monitoring.",
+    q: "What's included in your SEO and digital marketing services?",
+    a: "Our comprehensive digital marketing includes keyword research, on-page optimization, content strategy, link building, PPC campaign management, social media marketing, and detailed analytics reporting. We create custom strategies based on your industry and competition.",
   },
   {
-    q: "Do you offer maintenance after launch?",
-    a: "Yes. We can provide monthly support to handle fixes, enhancements, and performance improvements.",
+    q: "Can ZentechPoint integrate new software with our existing business systems?",
+    a: "Absolutely. We specialize in API development and system integration, ensuring seamless connectivity between new solutions and your current infrastructure. Our team conducts thorough compatibility assessments before beginning any integration project.",
+  },
+  {
+    q: "What ongoing support do you provide after project completion?",
+    a: "We offer comprehensive maintenance packages including security updates, performance monitoring, bug fixes, content updates, and technical support. Our support plans range from basic monthly maintenance to full-service management with 24/7 monitoring.",
+  },
+  {
+    q: "How does ZentechPoint ensure project quality and client satisfaction?",
+    a: "We follow rigorous quality assurance processes including code reviews, automated testing, user acceptance testing, and staged deployments. Regular client communication, milestone reviews, and our 99% satisfaction rate demonstrate our commitment to excellence.",
   },
 ];
 
