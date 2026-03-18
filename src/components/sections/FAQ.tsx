@@ -42,7 +42,7 @@ export default function FAQ() {
               className="services-header-item mt-4 text-3xl font-bold tracking-tight md:text-4xl"
               style={{ transitionDelay: "80ms" }}
             >
-              Frequently asked questions
+              Common Questions About ZentechPoint's Services
             </h2>
             <p
               className="services-header-item mt-3 max-w-xl leading-relaxed text-[color:var(--muted)]"

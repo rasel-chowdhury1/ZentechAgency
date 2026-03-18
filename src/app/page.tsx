@@ -7,17 +7,21 @@ import BlogPreview from "@/components/sections/BlogPreview";
 import CTA from "@/components/sections/CTA";
 import HeroMosaic from "@/components/sections/HeroMosaic";
 import WhyUs from "@/components/sections/WhyUs";
+import TrustIndicators from "@/components/sections/TrustIndicators";
+import HowWeWork from "@/components/sections/HowWeWork";
 
 export default function HomePage() {
   return (
     <>
       {/* <Hero /> */}
       <HeroMosaic/>
-      <WhyUs />
+      {/* <WhyUs /> */}
       <ServicesGrid />
-      <DarkServices />
+      <TrustIndicators />
+      <HowWeWork />
+      {/* <DarkServices /> */}
       <FAQ />
-      <BlogPreview />
+      {/* <BlogPreview /> */}
       <CTA />
     </>
   );
