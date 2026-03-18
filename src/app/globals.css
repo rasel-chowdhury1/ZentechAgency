@@ -270,16 +270,10 @@ body {
 /* Sub-elements: animationDelay handles sequencing */
 .hero-sub .hero-fade-up { animation-play-state: running; }
 
-/* Transition-based sub-content reveal (more reliable on mobile) */
+/* Sub-content: pure CSS animation, no JS class toggle needed */
 .hero-sub-item {
   opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
-              transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.sub-visible .hero-sub-item {
-  opacity: 1;
-  transform: translateY(0);
+  animation: hero-fade-up 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 /* One-time shimmer sweep — only on the inner span (no opacity conflict) */
