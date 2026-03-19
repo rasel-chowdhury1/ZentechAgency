@@ -27,7 +27,7 @@ export default function FAQ() {
       <div className="pointer-events-none absolute -top-32 right-0 h-[400px] w-[400px] rounded-full opacity-[0.04] blur-3xl"
         style={{ background: "radial-gradient(circle, var(--primary), transparent 70%)" }} />
 
-      <Container className="py-16 md:py-20">
+      <Container className="py-8 md:py-12">
         <div
           ref={sectionRef}
           className="grid gap-12 lg:grid-cols-[400px_1fr] lg:gap-16 xl:grid-cols-[440px_1fr]"
