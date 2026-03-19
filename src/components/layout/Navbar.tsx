@@ -91,7 +91,7 @@ export default function Navbar() {
           className={`flex items-center transition-all duration-500 ${mounted ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-3"}`}
         >
           <Image
-            src="/logo.png"
+            src={isDark ? "/zentechpoint_dark.png" : "/zentechpoint_wide.png"}
             alt="ZentechPoint"
             width={200}
             height={60}
