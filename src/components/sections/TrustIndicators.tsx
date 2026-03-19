@@ -94,7 +94,7 @@ export default function TrustIndicators() {
 
   return (
     <section className="border-t border-[color:var(--border)] bg-[color:var(--background)]">
-      <Container className="py-16 md:py-20">
+      <Container className="py-8 md:py-12">
 
         {/* Header */}
         <div className="mx-auto max-w-2xl text-center">

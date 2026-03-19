@@ -40,11 +40,6 @@ const icons: Record<string, React.ReactNode> = {
   ),
 };
 
-const sectionStats = [
-  { value: "6", label: "Core Services" },
-  { value: "380+", label: "Projects Delivered" },
-  { value: "99%", label: "Client Satisfaction" },
-];
 
 export default function ServicesGrid() {
   const headerRef = useRef<HTMLDivElement>(null);
@@ -74,7 +69,7 @@ export default function ServicesGrid() {
       <div className="pointer-events-none absolute -top-40 left-1/2 h-[500px] w-[800px] -translate-x-1/2 rounded-full opacity-[0.035] blur-3xl"
         style={{ background: "radial-gradient(ellipse, var(--primary), transparent 70%)" }} />
 
-      <Container className="relative py-16 md:py-20">
+      <Container className="relative py-8 md:py-12">
 
         {/* ── Header ── */}
         <div ref={headerRef} className="mx-auto max-w-3xl text-center">
@@ -104,18 +99,6 @@ export default function ServicesGrid() {
             experiences, and accelerate business growth — from initial concept through ongoing optimization.
           </p>
 
-          {/* Stats row */}
-          <div
-            className="services-header-item mt-8 inline-flex flex-wrap items-center justify-center gap-0 divide-x divide-[color:var(--border)] rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] px-2 py-1 shadow-sm"
-            style={{ transitionDelay: "210ms" }}
-          >
-            {sectionStats.map((s) => (
-              <div key={s.label} className="px-5 py-2 text-center">
-                <div className="text-xl font-bold text-[color:var(--foreground)]">{s.value}</div>
-                <div className="text-[11px] text-[color:var(--muted)]">{s.label}</div>
-              </div>
-            ))}
-          </div>
         </div>
 
         {/* ── Bento grid ── */}
