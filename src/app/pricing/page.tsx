@@ -51,6 +51,24 @@ export default function PricingPage() {
       <div className="border-b border-[color:var(--border)]">
         <Container className="pt-2 pb-12 md:pt-3 md:pb-16">
           <div ref={heroRef} className="text-center">
+            {/* Breadcrumb */}
+            <nav
+              className="services-header-item mb-5 flex items-center gap-1.5 text-[12px] text-[color:var(--muted)]"
+              style={{ transitionDelay: "0ms" }}
+              aria-label="Breadcrumb"
+            >
+              <Link href="/" className="inline-flex items-center gap-1 font-medium transition-colors hover:text-[color:var(--foreground)]">
+                <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M2.25 12l8.954-8.955a1.126 1.126 0 011.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                </svg>
+                Home
+              </Link>
+              <svg className="h-3 w-3 shrink-0 opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+                <path d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+              </svg>
+              <span className="font-semibold text-[color:var(--foreground)]">Pricing</span>
+            </nav>
+
             <span
               className="services-header-item inline-flex items-center gap-1.5 rounded-full border border-[color:var(--primary)]/30 bg-[color:var(--primary)]/8 px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-[color:var(--primary)]"
               style={{ transitionDelay: "0ms" }}
