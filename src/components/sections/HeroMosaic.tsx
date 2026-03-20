@@ -1,10 +1,332 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Container from "@/components/layout/Container";
 import { Button } from "@/components/ui/Button";
+
+/* ── Professional Constellation Canvas Background ── */
+type PType = "micro" | "standard" | "hub";
+type Particle = {
+  x: number; y: number; vx: number; vy: number;
+  r: number; type: PType; phase: number; phaseSpeed: number;
+};
+type Packet = { from: number; to: number; t: number; speed: number };
+
+function ConstellationCanvas() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const mouseRef = useRef<{ x: number; y: number } | null>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let animId: number;
+    let tick = 0;
+
+    // ── theme helpers (re-evaluated each frame so dark-mode toggle works live) ──
+    const isDark = () => document.documentElement.classList.contains("dark") ||
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+    const palette = () => {
+      const dark = isDark();
+      return {
+        // light: navy-slate dots contrast on #f9fafb; dark: sky-blue on #050814
+        dot:      dark ? [180, 215, 255] : [10, 40, 80],
+        // brand emerald — same in both modes
+        hub:      dark ? [25, 197, 154]  : [5, 150, 105],
+        // standard connection lines
+        line:     dark ? [160, 200, 255] : [20, 60, 110],
+        // hub-to-hub lines use brand emerald
+        hubLine:  dark ? [25, 197, 154]  : [5, 150, 105],
+        // data packet — always emerald
+        packet:   dark ? [25, 197, 154]  : [5, 150, 105],
+        // light mode needs higher alpha so particles show on white
+        dotA:     dark ? 0.55  : 0.32,
+        lineA:    dark ? 0.13  : 0.16,
+        hubLineA: dark ? 0.40  : 0.42,
+        // hub glow is toned down on white so it doesn't smudge
+        hubGlowA: dark ? 0.28  : 0.14,
+        hubRingA: dark ? 0.30  : 0.20,
+      };
+    };
+
+    const rgba = (rgb: number[], a: number) =>
+      `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${a.toFixed(3)})`;
+
+    // ── responsive config — scales everything with canvas width ──
+    type Config = {
+      hubN: number; stdN: number; microN: number;
+      pktN: number; maxStd: number; maxHub: number; repel: number;
+    };
+    const getConfig = (w: number): Config => {
+      if (w < 480) return { hubN: 3, stdN: 12, microN: 0, pktN: 1, maxStd:  80, maxHub: 120, repel:  0 };
+      if (w < 768) return { hubN: 5, stdN: 20, microN: 0, pktN: 2, maxStd: 100, maxHub: 150, repel: 60 };
+      if (w < 1024) return { hubN: 6, stdN: 30, microN: 6, pktN: 3, maxStd: 125, maxHub: 180, repel: 80 };
+      return               { hubN: 9, stdN: 48, microN: 20, pktN: 6, maxStd: 155, maxHub: 220, repel: 110 };
+    };
+
+    let cfg: Config = getConfig(0);
+    let particles: Particle[] = [];
+    let packets:   Packet[]   = [];
+    let prevW = 0, prevH = 0, prevBp = "";
+
+    const bp = (w: number) => w < 480 ? "xs" : w < 768 ? "sm" : w < 1024 ? "md" : "lg";
+
+    const mkParticle = (type: PType): Particle => {
+      const speeds: Record<PType, number> = { hub: 0.09, standard: 0.16, micro: 0.28 };
+      const radii:  Record<PType, () => number> = {
+        hub:      () => 3.2 + Math.random() * 1.4,
+        standard: () => 1.4 + Math.random() * 0.9,
+        micro:    () => 0.5 + Math.random() * 0.5,
+      };
+      const s = speeds[type];
+      const angle = Math.random() * Math.PI * 2;
+      const speed = s * (0.5 + Math.random() * 0.8);
+      return {
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        r: radii[type](),
+        type,
+        phase:      Math.random() * Math.PI * 2,
+        phaseSpeed: 0.008 + Math.random() * 0.012,
+      };
+    };
+
+    const mkPacket = (idx: number): Packet => {
+      const hubs = particles.map((p, i) => ({ p, i })).filter(x => x.p.type === "hub");
+      if (!hubs.length) return { from: 0, to: 1, t: 0, speed: 0.005 };
+      const src  = hubs[Math.floor(Math.random() * hubs.length)];
+      const candidates = particles.map((p, i) => {
+        if (i === src.i) return null;
+        const dx = p.x - src.p.x, dy = p.y - src.p.y;
+        const d = Math.sqrt(dx*dx + dy*dy);
+        return d < cfg.maxHub ? { i, d } : null;
+      }).filter(Boolean) as { i: number; d: number }[];
+      if (!candidates.length) return mkPacket(idx);
+      const tgt = candidates[Math.floor(Math.random() * candidates.length)];
+      return { from: src.i, to: tgt.i, t: 0, speed: 0.004 + Math.random() * 0.005 };
+    };
+
+    const spawnParticles = () => {
+      particles = [
+        ...Array.from({ length: cfg.hubN   }, () => mkParticle("hub")),
+        ...Array.from({ length: cfg.stdN   }, () => mkParticle("standard")),
+        ...Array.from({ length: cfg.microN }, () => mkParticle("micro")),
+      ];
+      packets = Array.from({ length: cfg.pktN }, (_, i) => mkPacket(i));
+    };
+
+    const resize = () => {
+      const newW = canvas.offsetWidth;
+      const newH = canvas.offsetHeight;
+      const newBp = bp(newW);
+      // breakpoint changed → reinit with new counts
+      if (newBp !== prevBp) {
+        cfg = getConfig(newW);
+        canvas.width = newW; canvas.height = newH;
+        prevW = newW; prevH = newH; prevBp = newBp;
+        spawnParticles();
+        return;
+      }
+      // same breakpoint → scale positions proportionally
+      if (prevW > 0 && prevH > 0 && particles.length > 0) {
+        const sx = newW / prevW, sy = newH / prevH;
+        for (const p of particles) { p.x *= sx; p.y *= sy; }
+      }
+      canvas.width = newW; canvas.height = newH;
+      prevW = newW; prevH = newH;
+    };
+
+    const init = () => {
+      const w = canvas.offsetWidth;
+      cfg = getConfig(w);
+      canvas.width  = w;
+      canvas.height = canvas.offsetHeight;
+      prevW = canvas.width; prevH = canvas.height;
+      prevBp = bp(w);
+      spawnParticles();
+    };
+
+    // ── draw hub glow ring ──
+    const drawHubGlow = (p: Particle, pulse: number, pal: ReturnType<typeof palette>) => {
+      const baseA = pal.hubGlowA;
+      const glow  = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * (4 + pulse * 3));
+      glow.addColorStop(0,   rgba(pal.hub, baseA + pulse * 0.10));
+      glow.addColorStop(0.4, rgba(pal.hub, baseA * 0.32));
+      glow.addColorStop(1,   rgba(pal.hub, 0));
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r * (4 + pulse * 3), 0, Math.PI * 2);
+      ctx.fillStyle = glow;
+      ctx.fill();
+    };
+
+    // ── main draw loop ──
+    const draw = () => {
+      tick++;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const pal   = palette();
+      const mouse = mouseRef.current;
+
+      // ── move particles ──
+      for (const p of particles) {
+        p.phase += p.phaseSpeed;
+
+        // mouse repulsion
+        if (mouse && cfg.repel > 0) {
+          const dx = p.x - mouse.x, dy = p.y - mouse.y;
+          const d  = Math.sqrt(dx*dx + dy*dy);
+          if (d < cfg.repel && d > 0) {
+            const force = (cfg.repel - d) / cfg.repel * 0.6;
+            p.vx += (dx / d) * force;
+            p.vy += (dy / d) * force;
+          }
+        }
+
+        // friction so repulsion doesn't snowball
+        const baseS: Record<PType, number> = { hub: 0.09, standard: 0.16, micro: 0.28 };
+        const maxV = baseS[p.type] * 2.8;
+        const spd  = Math.sqrt(p.vx*p.vx + p.vy*p.vy);
+        if (spd > maxV) { p.vx = (p.vx/spd)*maxV; p.vy = (p.vy/spd)*maxV; }
+
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0 || p.x > canvas.width)  p.vx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+        p.x = Math.max(0, Math.min(canvas.width,  p.x));
+        p.y = Math.max(0, Math.min(canvas.height, p.y));
+      }
+
+      // ── draw lines (standard + hub) ──
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const a = particles[i], b = particles[j];
+          if (a.type === "micro" && b.type === "micro") continue;
+          const isHubConn = a.type === "hub" || b.type === "hub";
+          const maxD = isHubConn ? cfg.maxHub : cfg.maxStd;
+          const dx = a.x - b.x, dy = a.y - b.y;
+          const dist = Math.sqrt(dx*dx + dy*dy);
+          if (dist >= maxD) continue;
+          const fade  = 1 - dist / maxD;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          if (isHubConn) {
+            ctx.strokeStyle = rgba(pal.hubLine, pal.hubLineA * fade);
+            ctx.lineWidth   = 0.9;
+          } else {
+            ctx.strokeStyle = rgba(pal.line, pal.lineA * fade);
+            ctx.lineWidth   = 0.55;
+          }
+          ctx.stroke();
+        }
+      }
+
+      // ── data packets (travel along hub connections) ──
+      for (let k = 0; k < packets.length; k++) {
+        const pkt = packets[k];
+        pkt.t += pkt.speed;
+        if (pkt.t >= 1) { packets[k] = mkPacket(k); continue; }
+        const src = particles[pkt.from], dst = particles[pkt.to];
+        const px = src.x + (dst.x - src.x) * pkt.t;
+        const py = src.y + (dst.y - src.y) * pkt.t;
+        // glow trail
+        const trail = ctx.createRadialGradient(px, py, 0, px, py, 7);
+        trail.addColorStop(0,   rgba(pal.packet, 0.7));
+        trail.addColorStop(0.5, rgba(pal.packet, 0.2));
+        trail.addColorStop(1,   rgba(pal.packet, 0));
+        ctx.beginPath();
+        ctx.arc(px, py, 7, 0, Math.PI * 2);
+        ctx.fillStyle = trail;
+        ctx.fill();
+        // core dot
+        ctx.beginPath();
+        ctx.arc(px, py, 2, 0, Math.PI * 2);
+        ctx.fillStyle = rgba(pal.packet, 1);
+        ctx.fill();
+      }
+
+      // ── draw particles ──
+      for (const p of particles) {
+        const pulse = Math.sin(p.phase) * 0.5 + 0.5; // 0→1
+
+        if (p.type === "hub") {
+          drawHubGlow(p, pulse, pal);
+          // outer ring
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r + pulse * 2.5, 0, Math.PI * 2);
+          ctx.strokeStyle = rgba(pal.hub, pal.hubRingA + pulse * 0.12);
+          ctx.lineWidth   = 0.8;
+          ctx.stroke();
+          // core
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = rgba(pal.hub, 0.85 + pulse * 0.15);
+          ctx.fill();
+        } else if (p.type === "standard") {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = rgba(pal.dot, pal.dotA * (0.7 + pulse * 0.3));
+          ctx.fill();
+        } else {
+          // micro — no pulse, just static tiny
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = rgba(pal.dot, pal.dotA * 0.55);
+          ctx.fill();
+        }
+      }
+
+      // ── subtle scan-line every 4s (only in dark mode) ──
+      if (isDark()) {
+        const scanY = ((tick * 0.4) % (canvas.height + 60)) - 30;
+        const scanGrad = ctx.createLinearGradient(0, scanY - 30, 0, scanY + 30);
+        scanGrad.addColorStop(0,   "rgba(25,197,154,0)");
+        scanGrad.addColorStop(0.5, "rgba(25,197,154,0.025)");
+        scanGrad.addColorStop(1,   "rgba(25,197,154,0)");
+        ctx.fillStyle = scanGrad;
+        ctx.fillRect(0, scanY - 30, canvas.width, 60);
+      }
+
+      animId = requestAnimationFrame(draw);
+    };
+
+    // defer until after first layout so canvas.offsetWidth is valid
+    requestAnimationFrame(() => { init(); draw(); });
+
+    // ── mouse tracking (on the section, not canvas) ──
+    const section = canvas.parentElement;
+    const onMove = (e: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      mouseRef.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+    };
+    const onLeave = () => { mouseRef.current = null; };
+    section?.addEventListener("mousemove", onMove);
+    section?.addEventListener("mouseleave", onLeave);
+
+    const ro = new ResizeObserver(() => { resize(); });
+    ro.observe(canvas);
+
+    return () => {
+      cancelAnimationFrame(animId);
+      ro.disconnect();
+      section?.removeEventListener("mousemove", onMove);
+      section?.removeEventListener("mouseleave", onLeave);
+    };
+  }, []);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="pointer-events-none absolute inset-0 h-full w-full"
+      aria-hidden="true"
+    />
+  );
+}
 
 /* ── Pre-defined word list with fixed delays ── */
 type WordDef = {
@@ -91,6 +413,9 @@ export default function HeroMosaic() {
 
   return (
     <section className="relative overflow-hidden bg-[color:var(--background)]">
+
+      {/* Constellation animated background */}
+      {/* <ConstellationCanvas /> */}
 
       {/* Subtle ambient background glow */}
       <div
