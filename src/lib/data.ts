@@ -280,9 +280,9 @@ export const team = [
     bio: "Rasel is the technical foundation of ZentechPoint. With deep expertise in full-stack development, software architecture, and custom system building, he transforms complex challenges into clean, scalable solutions. Every product ZentechPoint delivers carries his commitment to performance, precision, and long-term reliability.",
     gradient: "from-violet-500 to-purple-600",
     social: {
-      linkedin: "https://www.linkedin.com/in/raselchowdhury",
-      github: "https://github.com/raselchowdhury",
-      twitter: "#",
+      linkedin: "https://www.linkedin.com/in/rasel-chowdhury-mern-stack-web-developer/",
+      github: "https://github.com/rasel-chowdhury1",
+      facebook: "https://www.facebook.com/rasel.chyjoyntu",
     },
   },
   {
@@ -293,9 +293,9 @@ export const team = [
     bio: "Emu is the strategic growth engine behind ZentechPoint. She leads our marketing direction with a sharp focus on ROI-driven campaigns, brand positioning, and client growth. Her work ensures that every business we partner with doesn't just launch — it scales, attracts the right audience, and builds lasting market presence.",
     gradient: "from-emerald-500 to-teal-600",
     social: {
-      linkedin: "#",
-      instagram: "https://www.instagram.com/zentechpoint/?hl=en",
-      facebook: "https://web.facebook.com/profile.php?id=61584989416549",
+      linkedin: "https://www.linkedin.com/in/emu-chowdhury-seo-specialist/",
+      instagram: "https://www.instagram.com/emuchy00?igsh=MTloZWEzZTF4bmdoeQ==",
+      facebook: "https://www.facebook.com/share/1DDVm7ezha/",
     },
   },
   {
@@ -306,9 +306,9 @@ export const team = [
     bio: "Shimul is our voice across the digital landscape. She crafts compelling content, builds engaged communities, and shapes authentic brand presence across every platform. With a talent for storytelling and audience connection, she turns followers into loyal fans and fans into paying customers.",
     gradient: "from-blue-500 to-cyan-600",
     social: {
-      linkedin: "#",
-      instagram: "#",
-      twitter: "#",
+      linkedin: "www.linkedin.com/in/shimul-chowdhury-seo-specialist",
+      instagram: "https://www.facebook.com/profile.php?id=61578421731125",
+      facebook: "https://www.facebook.com/profile.php?id=61578421731125",
     },
   },
   {
