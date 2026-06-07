@@ -4,6 +4,7 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
 
+    console.log("form date of body =>>>> ", body)
     const name = String(body?.name || "").trim();
     const email = String(body?.email || "").trim();
     const company = String(body?.company || "").trim();

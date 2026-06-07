@@ -15,6 +15,9 @@ export const metadata: Metadata = {
     shortcut: "/logo.png",
     apple: "/logo.png",
   },
+  verification: {
+    google: "M1Vaje-4UowWZy1-2LCeTF4uE2t5aCaqMr0qyuTPzws",
+  },
 };
 
 export const viewport: Viewport = {
