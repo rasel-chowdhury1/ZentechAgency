@@ -25,3 +25,12 @@ export type PricingPlan = {
   features: string[];
   featured?: boolean;
 };
+
+export type ContactFormData = {
+  name: string;
+  email: string;
+  company: string;
+  service: string;
+  message: string;
+  submittedAt: Date;
+};
