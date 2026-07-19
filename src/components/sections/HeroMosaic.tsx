@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Container from "@/components/layout/Container";
@@ -365,6 +365,28 @@ const trustItems = [
 ];
 const marqueeItems = [...trustItems, ...trustItems, ...trustItems];
 
+function CountUp({ to, duration = 1400, suffix = "", delay = 0 }: { to: number; duration?: number; suffix?: string; delay?: number }) {
+  const [value, setValue] = useState(0);
+
+  useEffect(() => {
+    let raf = 0;
+    let start: number | null = null;
+
+    const step = (ts: number) => {
+      if (start === null) start = ts;
+      const progress = Math.min((ts - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setValue(Math.round(eased * to));
+      if (progress < 1) raf = requestAnimationFrame(step);
+    };
+
+    const timer = setTimeout(() => { raf = requestAnimationFrame(step); }, delay);
+    return () => { clearTimeout(timer); cancelAnimationFrame(raf); };
+  }, [to, duration, delay]);
+
+  return <>{value}{suffix}</>;
+}
+
 function W({ w }: { w: WordDef }) {
   const inner = w.shimmer ? (
     <span className="hero-shimmer-text">{w.text}</span>
@@ -422,6 +444,7 @@ export default function HeroMosaic() {
         className="pointer-events-none absolute -top-32 -left-32 h-[500px] w-[500px] rounded-full opacity-[0.06] blur-3xl"
         style={{ background: "radial-gradient(circle, var(--primary), transparent 70%)" }}
       />
+      
       <div
         className="pointer-events-none absolute top-1/2 -right-48 h-[600px] w-[600px] rounded-full opacity-[0.04] blur-3xl"
         style={{ background: "radial-gradient(circle, var(--ring), transparent 70%)" }}
@@ -566,50 +589,71 @@ export default function HeroMosaic() {
 
               {/* Row 1 */}
               <div className="grid grid-cols-3 gap-4">
-                <div className="col-span-2 overflow-hidden rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] shadow-sm">
-                  <div className="relative h-[168px] w-full">
-                    <Image src="/images/heroImage1.jpg" alt="ZentechPoint team working" fill priority className="object-cover" />
+                <div className="hero-mosaic-tile group relative overflow-hidden rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] shadow-sm transition-all duration-500 ease-out col-span-2 hover:-translate-y-1.5 hover:shadow-xl"
+                  style={{ animationDelay: "460ms" }}>
+                  <div className="relative h-[168px] w-full overflow-hidden">
+                    <Image src="/images/heroImage1.jpg" alt="ZentechPoint team working" fill priority
+                      className="object-cover transition-transform duration-700 ease-out group-hover:scale-110" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                     <div className="absolute bottom-3 left-3 rounded-full bg-[color:var(--card)]/90 backdrop-blur-sm px-3 py-1 text-[11px] font-semibold text-[color:var(--card-foreground)] shadow-sm">
                       Expert Team
                     </div>
                   </div>
                 </div>
-                <div className="overflow-hidden rounded-2xl border border-[color:var(--border)] bg-[color:var(--primary)] text-white shadow-sm">
-                  <div className="flex h-full flex-col justify-between p-5">
-                    <div className="text-[11px] font-semibold uppercase tracking-widest text-white/60">
-                      Clients Served
+
+                <div className="hero-mosaic-tile" style={{ animationDelay: "540ms" }}>
+                  <div className="hero-mosaic-float">
+                  <div className="group relative overflow-hidden rounded-2xl border border-[color:var(--border)] bg-[color:var(--primary)] text-white shadow-sm transition-all duration-500 ease-out hover:-translate-y-1.5 hover:shadow-2xl">
+                    <div className="pointer-events-none absolute inset-0 -translate-x-[130%] skew-x-[-18deg] transition-transform duration-[1100ms] ease-out group-hover:translate-x-[130%]"
+                      style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.14), transparent)" }} />
+                    <div className="relative flex h-full flex-col justify-between p-5">
+                      <div className="text-[11px] font-semibold uppercase tracking-widest text-white/60">
+                        Clients Served
+                      </div>
+                      <div>
+                        <div className="text-[46px] font-bold leading-none text-white transition-transform duration-500 group-hover:scale-105">
+                          <CountUp to={55} suffix="+" delay={940} duration={1300} />
+                        </div>
+                        <div className="mt-1.5 text-[11px] text-white/70">Worldwide</div>
+                      </div>
                     </div>
-                    <div>
-                      <div className="text-[46px] font-bold leading-none text-white">55+</div>
-                      <div className="mt-1.5 text-[11px] text-white/70">Worldwide</div>
-                    </div>
+                  </div>
                   </div>
                 </div>
               </div>
 
               {/* Row 2 */}
               <div className="grid grid-cols-3 gap-4">
-                <div className="col-span-2 overflow-hidden rounded-2xl border border-[color:var(--border)] bg-[color:var(--primary)] text-white shadow-sm">
-                  <div className="relative p-6">
-                    <div className="text-[11px] font-semibold uppercase tracking-widest text-white/60">
-                      Projects Delivered
+                <div className="hero-mosaic-tile col-span-2" style={{ animationDelay: "620ms" }}>
+                  <div className="hero-mosaic-float">
+                  <div className="group relative overflow-hidden rounded-2xl border border-[color:var(--border)] bg-[color:var(--primary)] text-white shadow-sm transition-all duration-500 ease-out hover:-translate-y-1.5 hover:shadow-2xl">
+                    <div className="pointer-events-none absolute inset-0 -translate-x-[130%] skew-x-[-18deg] transition-transform duration-[1100ms] ease-out group-hover:translate-x-[130%]"
+                      style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.14), transparent)" }} />
+                    <div className="relative p-6">
+                      <div className="text-[11px] font-semibold uppercase tracking-widest text-white/60">
+                        Projects Delivered
+                      </div>
+                      <div className="mt-2 text-[58px] font-bold leading-none text-white transition-transform duration-500 group-hover:scale-105">
+                        <CountUp to={380} suffix="+" delay={1020} duration={1600} />
+                      </div>
+                      <div className="mt-1 text-sm text-white/70">Across web, mobile & software</div>
+                      <div
+                        className="pointer-events-none absolute right-0 top-0 h-full w-28 opacity-10"
+                        style={{ background: "radial-gradient(circle at 80% 50%, #fff, transparent 60%)" }}
+                      />
                     </div>
-                    <div className="mt-2 text-[58px] font-bold leading-none text-white">380+</div>
-                    <div className="mt-1 text-sm text-white/70">Across web, mobile & software</div>
-                    <div
-                      className="pointer-events-none absolute right-0 top-0 h-full w-28 opacity-10"
-                      style={{ background: "radial-gradient(circle at 80% 50%, #fff, transparent 60%)" }}
-                    />
+                  </div>
                   </div>
                 </div>
-                <div className="overflow-hidden rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] shadow-sm">
-                  <div className="flex h-full flex-col justify-between p-5">
+
+                <div className="hero-mosaic-tile group relative overflow-hidden rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] shadow-sm transition-all duration-500 ease-out hover:-translate-y-1.5 hover:shadow-xl"
+                  style={{ animationDelay: "700ms" }}>
+                  <div className="relative flex h-full flex-col justify-between p-5">
                     <p className="text-[12px] leading-[1.6] text-[color:var(--muted)]">
                       Real results, real clients — honest feedback that speaks for itself.
                     </p>
                     <div>
-                      <div className="flex gap-0.5 text-amber-400 text-sm">★★★★★</div>
+                      <div className="flex gap-0.5 text-amber-400 text-sm transition-transform duration-300 group-hover:scale-110" style={{ transformOrigin: "left" }}>★★★★★</div>
                       <div className="mt-1 text-[11px] font-semibold text-[color:var(--muted)]">
                         5.0 · Trustpilot Reviews
                       </div>
@@ -620,18 +664,22 @@ export default function HeroMosaic() {
 
               {/* Row 3 */}
               <div className="grid grid-cols-2 gap-4">
-                <div className="overflow-hidden rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] shadow-sm">
-                  <div className="relative h-[148px] w-full">
-                    <Image src="/images/heroImage2.png" alt="Developers collaborating" fill className="object-cover" />
+                <div className="hero-mosaic-tile group relative overflow-hidden rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] shadow-sm transition-all duration-500 ease-out hover:-translate-y-1.5 hover:shadow-xl"
+                  style={{ animationDelay: "780ms" }}>
+                  <div className="relative h-[148px] w-full overflow-hidden">
+                    <Image src="/images/heroImage2.png" alt="Developers collaborating" fill
+                      className="object-cover transition-transform duration-700 ease-out group-hover:scale-110" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                     <div className="absolute bottom-3 left-3 rounded-full bg-[color:var(--card)]/90 backdrop-blur-sm px-3 py-1 text-[11px] font-semibold text-[color:var(--card-foreground)] shadow-sm">
                       Collaborative Process
                     </div>
                   </div>
                 </div>
-                <div className="overflow-hidden rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] shadow-sm">
-                  <div className="relative h-[148px] w-full">
-                    <Image src="/images/heroImage3.jpg" alt="Developer coding" fill className="object-cover" />
+                <div className="hero-mosaic-tile group relative overflow-hidden rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] shadow-sm transition-all duration-500 ease-out hover:-translate-y-1.5 hover:shadow-xl"
+                  style={{ animationDelay: "860ms" }}>
+                  <div className="relative h-[148px] w-full overflow-hidden">
+                    <Image src="/images/heroImage3.jpg" alt="Developer coding" fill
+                      className="object-cover transition-transform duration-700 ease-out group-hover:scale-110" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                     <div className="absolute bottom-3 left-3 rounded-full bg-[color:var(--card)]/90 backdrop-blur-sm px-3 py-1 text-[11px] font-semibold text-[color:var(--card-foreground)] shadow-sm">
                       Precision Engineering
@@ -645,6 +693,8 @@ export default function HeroMosaic() {
 
         </div>
       </Container>
+
+
     </section>
   );
 }
