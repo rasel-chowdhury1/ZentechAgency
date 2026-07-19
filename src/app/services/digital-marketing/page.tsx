@@ -5,6 +5,7 @@ import Container from "@/components/layout/Container";
 import { services } from "@/lib/data";
 import FaqAccordion from "@/components/sections/FaqAccordion";
 import ProcessSteps from "@/components/sections/ProcessSteps";
+import WhyChooseGrid from "@/components/sections/WhyChooseGrid";
 
 export const metadata: Metadata = {
   title: "SEO & Performance Marketing Services | ZentechPoint",
@@ -52,10 +53,10 @@ const TRUST_INDICATORS = [
 
 // ── Company authority differentiators ──────────────────────────────────────
 const DIFFERENTIATORS = [
-  { title: "Local Market Domination", desc: "Google Business Profile optimization and local citation strategies" },
-  { title: "ROI-Focused Campaigns", desc: "Performance tracking with advanced analytics and conversion optimization" },
-  { title: "Technical SEO Mastery", desc: "Core Web Vitals optimization and mobile-first indexing" },
-  { title: "Transparent Communication", desc: "Weekly performance reports and monthly strategy consultations" },
+  { emoji: "📍", title: "Local Market Domination", desc: "Google Business Profile optimization and local citation strategies" },
+  { emoji: "📊", title: "ROI-Focused Campaigns", desc: "Performance tracking with advanced analytics and conversion optimization" },
+  { emoji: "⚙️", title: "Technical SEO Mastery", desc: "Core Web Vitals optimization and mobile-first indexing" },
+  { emoji: "💬", title: "Transparent Communication", desc: "Weekly performance reports and monthly strategy consultations" },
 ];
 
 // ── Services offered ──────────────────────────────────────────────────────
@@ -473,15 +474,12 @@ export default function DigitalMarketingPage() {
             </p>
           </div>
 
-          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {DIFFERENTIATORS.map((d) => (
-              <div key={d.title} className="rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] p-6">
-                <CheckIcon color={AC} />
-                <h3 className="mt-3 text-[14px] font-bold text-[color:var(--foreground)]">{d.title}</h3>
-                <p className="mt-1.5 text-[12.5px] leading-snug text-[color:var(--muted)]">{d.desc}</p>
-              </div>
-            ))}
-          </div>
+          <WhyChooseGrid
+            items={DIFFERENTIATORS.map((d) => ({ icon: d.emoji, title: d.title, desc: d.desc }))}
+            accent={AC}
+            columns={4}
+            compact
+          />
         </Container>
       </div>
 

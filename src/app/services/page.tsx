@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Container from "@/components/layout/Container";
 import { services } from "@/lib/data";
@@ -89,6 +89,18 @@ export default function ServicesPage() {
   const [featured, ...rest] = services;
   const fa = ACCENT[featured.category];
 
+  const [highlight, setHighlight] = useState<string | null>(null);
+  const highlightTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const scrollToService = (slug: string) => {
+    const el = document.getElementById(`svc-${slug}`);
+    if (!el) return;
+    el.scrollIntoView({ behavior: "smooth", block: "center" });
+    setHighlight(slug);
+    if (highlightTimer.current) clearTimeout(highlightTimer.current);
+    highlightTimer.current = setTimeout(() => setHighlight(null), 2200);
+  };
+
   return (
     <main className="min-h-screen bg-[color:var(--background)]">
 
@@ -165,14 +177,17 @@ export default function ServicesPage() {
               className="services-header-item mt-7 flex flex-wrap gap-2"
               style={{ transitionDelay: "290ms" }}
             >
-              {Object.entries(ACCENT).map(([cat, color]) => (
-                <span key={cat}
-                  className="inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12px] font-semibold"
-                  style={{ borderColor: `${color}35`, backgroundColor: `${color}10`, color }}>
-                  {ICONS[cat]}
-                  {cat}
-                </span>
-              ))}
+              {Object.entries(ACCENT).map(([cat, color]) => {
+                const target = services.find((s) => s.category === cat)?.slug;
+                return (
+                  <button key={cat} type="button" onClick={() => target && scrollToService(target)}
+                    className="inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12px] font-semibold transition-all duration-200 hover:-translate-y-0.5 hover:shadow-sm"
+                    style={{ borderColor: `${color}35`, backgroundColor: `${color}10`, color }}>
+                    {ICONS[cat]}
+                    {cat}
+                  </button>
+                );
+              })}
             </div>
 
           </div>
@@ -184,6 +199,7 @@ export default function ServicesPage() {
       {/* ════════════════════════════════════
           SERVICES GRID
       ════════════════════════════════════ */}
+      <div id="all-services" className="scroll-mt-20">
       <Container className="py-14 md:py-20">
         <div ref={cardsRef}>
 
@@ -200,10 +216,10 @@ export default function ServicesPage() {
           </div>
 
           {/* ── Featured card (full-width) ── */}
-          <div className="svc-ci" style={{ "--d": "60ms" } as React.CSSProperties}>
+          <div id={`svc-${featured.slug}`} className="svc-ci scroll-mt-24" style={{ "--d": "60ms" } as React.CSSProperties}>
             <Link href={`/services/${featured.slug}`} className="group block">
-              <div className="relative overflow-hidden rounded-3xl border border-[color:var(--border)] bg-[color:var(--card)] p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl md:p-10"
-                style={{ borderLeft: `4px solid ${fa}` }}>
+              <div className={`relative overflow-hidden rounded-3xl border border-[color:var(--border)] bg-[color:var(--card)] p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl md:p-10 ${highlight === featured.slug ? "svc-highlight" : ""}`}
+                style={{ borderLeft: `4px solid ${fa}`, ["--hl-color" as string]: fa }}>
 
                 {/* Hover colour wash */}
                 <div className="pointer-events-none absolute inset-0 rounded-3xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
@@ -285,11 +301,11 @@ export default function ServicesPage() {
             {rest.map((s, i) => {
               const ac = ACCENT[s.category];
               return (
-                <Link key={s.slug} href={`/services/${s.slug}`}
-                  className="svc-ci group"
+                <Link key={s.slug} id={`svc-${s.slug}`} href={`/services/${s.slug}`}
+                  className="svc-ci group scroll-mt-24"
                   style={{ "--d": `${(i + 2) * 60}ms` } as React.CSSProperties}>
-                  <div className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
-                    style={{ borderTop: `3px solid ${ac}` }}>
+                  <div className={`relative flex h-full flex-col overflow-hidden rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${highlight === s.slug ? "svc-highlight" : ""}`}
+                    style={{ borderTop: `3px solid ${ac}`, ["--hl-color" as string]: ac }}>
 
                     {/* Hover colour wash */}
                     <div className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
@@ -395,6 +411,7 @@ export default function ServicesPage() {
 
         </div>
       </Container>
+      </div>
 
       {/* ── Animations ── */}
       <style>{`
@@ -407,6 +424,21 @@ export default function ServicesPage() {
                       transform 0.6s cubic-bezier(0.22,1,0.36,1) var(--d,0ms);
         }
         .svc-cards-visible .svc-ci { opacity:1; transform:translateY(0); }
+
+        /* Category-pill highlight pulse */
+        .svc-highlight {
+          animation: svcHighlightPulse 1.1s ease-out 2;
+        }
+        @keyframes svcHighlightPulse {
+          0%, 100% {
+            box-shadow: 0 0 0 0 color-mix(in srgb, var(--hl-color) 0%, transparent),
+                        0 20px 45px -20px color-mix(in srgb, var(--hl-color) 55%, transparent);
+          }
+          50% {
+            box-shadow: 0 0 0 6px color-mix(in srgb, var(--hl-color) 45%, transparent),
+                        0 20px 45px -20px color-mix(in srgb, var(--hl-color) 55%, transparent);
+          }
+        }
       `}</style>
     </main>
   );

@@ -5,6 +5,7 @@ import Container from "@/components/layout/Container";
 import { services } from "@/lib/data";
 import FaqAccordion from "@/components/sections/FaqAccordion";
 import ProcessSteps from "@/components/sections/ProcessSteps";
+import WhyChooseGrid from "@/components/sections/WhyChooseGrid";
 
 export const metadata: Metadata = {
   title: "Custom Mobile App Development Company | ZentechPoint",
@@ -457,18 +458,12 @@ export default function AppDevelopmentPage() {
             </p>
           </div>
 
-          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {ADVANTAGES.map((a) => (
-              <div key={a.title} className="rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] p-6 text-center">
-                <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl text-2xl"
-                  style={{ backgroundColor: `${AC}15` }}>
-                  {a.emoji}
-                </span>
-                <h3 className="mt-4 text-[14px] font-bold text-[color:var(--foreground)]">{a.title}</h3>
-                <p className="mt-1.5 text-[12.5px] leading-snug text-[color:var(--muted)]">{a.desc}</p>
-              </div>
-            ))}
-          </div>
+          <WhyChooseGrid
+            items={ADVANTAGES.map((a) => ({ icon: a.emoji, title: a.title, desc: a.desc }))}
+            accent={AC}
+            columns={4}
+            compact
+          />
         </Container>
       </div>
 

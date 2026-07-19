@@ -5,6 +5,7 @@ import Container from "@/components/layout/Container";
 import { services } from "@/lib/data";
 import FaqAccordion from "@/components/sections/FaqAccordion";
 import ProcessSteps from "@/components/sections/ProcessSteps";
+import WhyChooseGrid from "@/components/sections/WhyChooseGrid";
 
 export const metadata: Metadata = {
   title: "IT Consulting & Support Services | ZentechPoint",
@@ -60,6 +61,7 @@ const TRUST_INDICATORS = [
 // ── Why choose ZentechPoint ───────────────────────────────────────────────
 const WHY_CHOOSE = [
   {
+    emoji: "🛡️",
     title: "Proactive IT Management, Not Just Problem-Solving",
     points: [
       "Continuous monitoring of your systems 24/7",
@@ -69,6 +71,7 @@ const WHY_CHOOSE = [
     ],
   },
   {
+    emoji: "🌍",
     title: "Local Expertise with Enterprise-Grade Solutions",
     points: [
       "Fast on-site support throughout your region and surrounding areas",
@@ -78,6 +81,7 @@ const WHY_CHOOSE = [
     ],
   },
   {
+    emoji: "📈",
     title: "Measurable Results and Transparent Reporting",
     points: [
       "Monthly performance reports with key metrics",
@@ -421,22 +425,11 @@ export default function ItConsultancyPage() {
             </p>
           </div>
 
-          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {WHY_CHOOSE.map((cat) => (
-              <div key={cat.title}
-                className="rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] p-6">
-                <h3 className="text-[15px] font-bold text-[color:var(--foreground)]">{cat.title}</h3>
-                <ul className="mt-4 space-y-2.5">
-                  {cat.points.map((p) => (
-                    <li key={p} className="flex items-start gap-2 text-[13px] leading-relaxed text-[color:var(--muted)]">
-                      <CheckIcon color={AC} />
-                      {p}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
+          <WhyChooseGrid
+            items={WHY_CHOOSE.map((c) => ({ icon: c.emoji, title: c.title, points: c.points }))}
+            accent={AC}
+            columns={3}
+          />
         </Container>
       </div>
 

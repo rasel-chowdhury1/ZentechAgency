@@ -5,6 +5,7 @@ import Container from "@/components/layout/Container";
 import { services } from "@/lib/data";
 import FaqAccordion from "@/components/sections/FaqAccordion";
 import ProcessSteps from "@/components/sections/ProcessSteps";
+import WhyChooseGrid from "@/components/sections/WhyChooseGrid";
 
 export const metadata: Metadata = {
   title: "UI/UX Design Systems | ZentechPoint Custom Development",
@@ -52,11 +53,11 @@ const KEY_BENEFITS = [
 
 // ── Track record ────────────────────────────────────────────────────────
 const TRACK_RECORD = [
-  "500+ design components delivered",
-  "50+ enterprise clients served",
-  "95% client satisfaction rate",
-  "WCAG 2.1 AA compliance expertise",
-  "Figma, Adobe XD, and Sketch specialists",
+  { emoji: "🧩", title: "500+ design components delivered" },
+  { emoji: "🏢", title: "50+ enterprise clients served" },
+  { emoji: "⭐", title: "95% client satisfaction rate" },
+  { emoji: "♿", title: "WCAG 2.1 AA compliance expertise" },
+  { emoji: "🎨", title: "Figma, Adobe XD, and Sketch specialists" },
 ];
 
 // ── Services offered ──────────────────────────────────────────────────────
@@ -442,13 +443,13 @@ export default function UiUxDesignPage() {
             </p>
           </div>
 
-          <div className="mx-auto mt-10 grid max-w-3xl gap-3 sm:grid-cols-2">
-            {TRACK_RECORD.map((t) => (
-              <div key={t} className="flex items-center gap-2.5 rounded-xl border border-[color:var(--border)] bg-[color:var(--card)] px-4 py-3 text-[13px] font-medium text-[color:var(--foreground)]">
-                <CheckIcon color={AC} />
-                {t}
-              </div>
-            ))}
+          <div className="mx-auto max-w-3xl">
+            <WhyChooseGrid
+              items={TRACK_RECORD.map((t) => ({ icon: t.emoji, title: t.title }))}
+              accent={AC}
+              columns={3}
+              compact
+            />
           </div>
         </Container>
       </div>

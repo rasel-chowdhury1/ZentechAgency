@@ -5,6 +5,7 @@ import Container from "@/components/layout/Container";
 import { services } from "@/lib/data";
 import FaqAccordion from "@/components/sections/FaqAccordion";
 import ProcessSteps from "@/components/sections/ProcessSteps";
+import WhyChooseGrid from "@/components/sections/WhyChooseGrid";
 
 export const metadata: Metadata = {
   title: "Website Design & Development Services | ZentechPoint",
@@ -449,28 +450,11 @@ export default function WebDevelopmentPage() {
             </h2>
           </div>
 
-          <div className="mt-10 grid gap-5 sm:grid-cols-2">
-            {WHY_CHOOSE.map((cat) => (
-              <div key={cat.title}
-                className="rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] p-6">
-                <div className="flex items-center gap-3">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-lg"
-                    style={{ backgroundColor: `${AC}15` }}>
-                    {cat.emoji}
-                  </span>
-                  <h3 className="text-[15px] font-bold text-[color:var(--foreground)]">{cat.title}</h3>
-                </div>
-                <ul className="mt-4 space-y-2.5">
-                  {cat.points.map((p) => (
-                    <li key={p} className="flex items-start gap-2 text-[13px] leading-relaxed text-[color:var(--muted)]">
-                      <CheckIcon color={AC} />
-                      {p}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
+          <WhyChooseGrid
+            items={WHY_CHOOSE.map((c) => ({ icon: c.emoji, title: c.title, points: c.points }))}
+            accent={AC}
+            columns={2}
+          />
         </Container>
       </div>
 
