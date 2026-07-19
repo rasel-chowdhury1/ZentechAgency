@@ -1,8 +1,10 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 import Container from "@/components/layout/Container";
 import { services } from "@/lib/data";
 import FaqAccordion from "@/components/sections/FaqAccordion";
+import ProcessSteps from "@/components/sections/ProcessSteps";
 
 export const metadata: Metadata = {
   title: "Custom Software Development | ZentechPoint Automation Solutions",
@@ -364,6 +366,8 @@ export default function SoftwareDevelopmentPage() {
           style={{ background: `linear-gradient(90deg, transparent, ${AC}60, transparent)` }} />
 
         <Container className="relative pt-4 pb-14 md:pt-5 md:pb-20">
+        <div className="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+        <div>
           {/* Breadcrumb */}
           <nav className="mb-7 flex items-center gap-1.5 text-[12px] text-[color:var(--muted)]" aria-label="Breadcrumb">
             <Link href="/" className="inline-flex items-center gap-1 font-medium transition-colors hover:text-[color:var(--foreground)]">
@@ -430,6 +434,34 @@ export default function SoftwareDevelopmentPage() {
               View Pricing
             </a>
           </div>
+        </div>
+
+        {/* ── Right: hero image ── */}
+        <div className="relative mt-12 lg:mt-0">
+          <div className="group relative aspect-[5/4] w-full overflow-hidden rounded-3xl border shadow-xl transition-shadow duration-500 hover:shadow-2xl"
+            style={{ borderColor: `${AC}25` }}>
+            <Image
+              src="/images/services/Software_Development.png"
+              alt="Custom software and automation development services by ZentechPoint"
+              fill
+              priority
+              className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+            />
+            <div className="pointer-events-none absolute inset-0"
+              style={{ background: `linear-gradient(180deg, transparent 55%, ${AC}30 100%)` }} />
+          </div>
+
+          <div className="absolute -top-5 -right-5 rounded-2xl px-4 py-3 text-white shadow-lg" style={{ backgroundColor: AC }}>
+            <div className="text-[13px] font-bold">Engineering</div>
+          </div>
+
+          <div className="absolute -bottom-6 -left-6 rounded-2xl border bg-[color:var(--card)] px-5 py-4 shadow-lg"
+            style={{ borderColor: "var(--border)" }}>
+            <div className="text-[11px] text-[color:var(--muted)]">Manual Work Reduced</div>
+            <div className="text-xl font-bold" style={{ color: AC }}>85%</div>
+          </div>
+        </div>
+        </div>
         </Container>
       </section>
 
@@ -520,34 +552,7 @@ export default function SoftwareDevelopmentPage() {
           </h2>
         </div>
 
-        <div className="mx-auto mt-10 max-w-3xl space-y-4">
-          {PROCESS.map((step, i) => (
-            <div key={step.n}
-              className="relative flex gap-5 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] p-6 transition-all duration-200 hover:shadow-md"
-              style={{ borderLeftWidth: "3px", borderLeftColor: i === 0 ? `${AC}55` : "var(--border)" }}>
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-[12px] font-black text-white"
-                style={{ backgroundColor: AC }}>
-                {step.n}
-              </span>
-              <div className="min-w-0 flex-1">
-                <h3 className="text-[15px] font-bold text-[color:var(--foreground)]">
-                  Phase {i + 1}: {step.title}
-                </h3>
-                <ul className="mt-3 grid gap-2 sm:grid-cols-2">
-                  {step.points.map((p) => (
-                    <li key={p} className="flex items-start gap-2 text-[12.5px] leading-relaxed text-[color:var(--muted)]">
-                      <CheckIcon color={AC} />
-                      {p}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              {i < PROCESS.length - 1 && (
-                <div className="absolute -bottom-4 left-[34px] h-4 w-px bg-[color:var(--border)]" />
-              )}
-            </div>
-          ))}
-        </div>
+        <ProcessSteps steps={PROCESS} accent={AC} />
       </Container>
 
       {/* ════════════════════════════════════

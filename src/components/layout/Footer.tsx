@@ -182,7 +182,7 @@ export default function Footer() {
             <ul className="mt-5 space-y-4">
               <li>
                 <a
-                  href="mailto:hello@zentechpoint.com"
+                  href="mailto:zentechpoint@gmail.com"
                   className="group flex items-start gap-3 text-sm text-white/40 transition-colors duration-200 hover:text-white"
                 >
                   <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-white/8 bg-white/[0.04] text-white/25 transition-all duration-200 group-hover:border-[color:var(--primary)]/30 group-hover:bg-[color:var(--primary)]/10 group-hover:text-[color:var(--primary)]">
@@ -192,7 +192,7 @@ export default function Footer() {
                   </span>
                   <span>
                     <span className="block text-[10px] font-semibold uppercase tracking-widest text-white/25">Email</span>
-                    hello@zentechpoint.com
+                    zentechpoint@gmail.com
                   </span>
                 </a>
               </li>
