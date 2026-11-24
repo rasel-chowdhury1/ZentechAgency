@@ -9,6 +9,7 @@ import HeroMosaic from "@/components/sections/HeroMosaic";
 import WhyUs from "@/components/sections/WhyUs";
 import TrustIndicators from "@/components/sections/TrustIndicators";
 import HowWeWork from "@/components/sections/HowWeWork";
+import Testimonials from "@/components/sections/Testimonials";
 
 export default function HomePage() {
   return (
@@ -19,6 +20,7 @@ export default function HomePage() {
       <ServicesGrid />
       <TrustIndicators />
       <HowWeWork />
+      <Testimonials />
       {/* <DarkServices /> */}
       <FAQ />
       {/* <BlogPreview /> */}
